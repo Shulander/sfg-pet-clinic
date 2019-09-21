@@ -23,3 +23,6 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+/pet-clinic-data/target/
+/pet-clinic-web/target/
