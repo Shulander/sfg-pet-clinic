@@ -7,8 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class VetServicesMap extends AbstractMapService<Vet, Long> implements VetService {
 
-    @Override
-    public Vet save(Vet object) {
-        return save(object.getId(), object);
-    }
 }

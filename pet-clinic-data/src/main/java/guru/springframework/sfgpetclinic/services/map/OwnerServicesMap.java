@@ -14,9 +14,4 @@ public class OwnerServicesMap extends AbstractMapService<Owner, Long> implements
                 .findFirst()
                 .orElse(null);
     }
-
-    @Override
-    public Owner save(Owner object) {
-        return save(object.getId(), object);
-    }
 }
