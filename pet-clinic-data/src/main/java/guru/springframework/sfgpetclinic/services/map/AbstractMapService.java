@@ -23,7 +23,8 @@ abstract class AbstractMapService<T extends BaseEntity, ID extends Long> {
         if (object.getId() == null) {
             object.setId(getNextId());
         }
-        return map.put(object.getId(), object);
+        map.put(object.getId(), object);
+        return object;
     }
 
     public Set<T> findAll() {
