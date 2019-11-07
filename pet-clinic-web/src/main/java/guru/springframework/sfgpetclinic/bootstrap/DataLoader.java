@@ -26,44 +26,47 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         log.info("Data Loader started");
-        PetType dogType = new PetType();
-        dogType.setName("Dog");
+        PetType dogType = PetType.builder().name("Dog").build();
         PetType savedDogType = petTypeService.save(dogType);
-        PetType catType = new PetType();
-        catType.setName("Dog");
+
+        PetType catType = PetType.builder().name("Cat").build();
         PetType savedCatType = petTypeService.save(catType);
         log.info("Loaded PetType...");
 
 
-        Owner owner1 = new Owner();
-        owner1.setFirstName("Michael");
-        owner1.setLastName("Weston");
-        owner1.setAddress("123 Brickerel");
-        owner1.setCity("Miami");
-        owner1.setTelephone("510 321 4125");
+        Owner owner1 = Owner.builder()
+                .firstName("Michael")
+                .lastName("Weston")
+                .address("123 Brickerel")
+                .city("Miami")
+                .telephone("510 321 4125")
+                .build();
 
-        Pet mikesPet = new Pet();
-        mikesPet.setPetType(savedDogType);
-        mikesPet.setOwner(owner1);
-        mikesPet.setBirthDate(LocalDate.now());
-        mikesPet.setName("Rosco");
+        Pet mikesPet = Pet.builder()
+                .petType(savedDogType)
+                .owner(owner1)
+                .birthDate(LocalDate.now())
+                .name("Rosco")
+                .build();
         owner1.getPets().add(mikesPet);
 
         ownerService.save(owner1);
         log.info("Saved owner 1: {}", owner1);
 
-        Owner owner2 = new Owner();
-        owner2.setFirstName("Fiona");
-        owner2.setLastName("Glenanne");
-        owner2.setAddress("123 Brickerel");
-        owner2.setCity("Miami");
-        owner2.setTelephone("510 321 4125");
+        Owner owner2 = Owner.builder()
+                .firstName("Fiona")
+                .lastName("Glenanne")
+                .address("123 Brickerel")
+                .city("Miami")
+                .telephone("510 321 4125")
+                .build();
 
-        Pet fionasPet = new Pet();
-        fionasPet.setPetType(savedCatType);
-        fionasPet.setOwner(owner2);
-        fionasPet.setBirthDate(LocalDate.now().minusDays(30));
-        fionasPet.setName("Arya");
+        Pet fionasPet = Pet.builder()
+                .petType(savedCatType)
+                .owner(owner2)
+                .birthDate(LocalDate.now().minusDays(30))
+                .name("Arya")
+                .build();
         owner2.getPets().add(fionasPet);
 
         ownerService.save(owner2);
@@ -71,15 +74,19 @@ public class DataLoader implements CommandLineRunner {
 
         log.info("Loaded Owners...");
 
-        Vet vet1 = new Vet();
-        vet1.setFirstName("Sam");
-        vet1.setLastName("Axe");
+        Vet vet1 = Vet.builder()
+                .firstName("Sam")
+                .lastName("Axe")
+                .build();
         vetService.save(vet1);
+        log.info("Saved vet 1: {}", vet1);
 
-        Vet vet2 = new Vet();
-        vet2.setFirstName("Jessie");
-        vet2.setLastName("Porter");
+        Vet vet2 = Vet.builder()
+                .firstName("Jessie")
+                .lastName("Porter")
+                .build();
         vetService.save(vet2);
+        log.info("Saved vet 2: {}", vet2);
 
         log.info("Loaded Vets...");
     }
