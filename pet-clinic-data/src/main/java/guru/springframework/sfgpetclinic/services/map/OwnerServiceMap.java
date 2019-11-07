@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-class OwnerServicesMap extends AbstractMapService<Owner, Long> implements OwnerService {
+class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService {
     private final PetService petService;
 
     @Override
