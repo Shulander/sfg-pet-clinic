@@ -5,6 +5,6 @@ import guru.springframework.sfgpetclinic.services.VetService;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class VetServicesMap extends AbstractMapService<Vet, Long> implements VetService {
+class VetServicesMap extends AbstractMapService<Vet, Long> implements VetService {
 
 }
