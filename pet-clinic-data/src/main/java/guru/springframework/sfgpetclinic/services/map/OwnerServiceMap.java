@@ -24,11 +24,15 @@ class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerSe
             Set<Pet> newPets = object.getPets()
                     .stream()
                     .peek(pet -> pet.setOwner(object))
-                    .map(petService::save)
+                    .map(this::persistNewObject)
                     .collect(Collectors.toSet());
             object.setPets(newPets);
         }
         return super.save(object);
+    }
+
+    private Pet persistNewObject(Pet pet) {
+        return pet.getId() == null ? petService.save(pet) : pet;
     }
 
     @Override

@@ -19,8 +19,9 @@ class PetServicesMap extends AbstractMapService<Pet, Long> implements PetService
         if (object.getPetType() == null) {
             throw new IllegalArgumentException("Pet Type is required");
         }
-
-        object.setPetType(petTypeService.save(object.getPetType()));
+        if (object.getPetType().getId() == null) {
+            object.setPetType(petTypeService.save(object.getPetType()));
+        }
 
         return super.save(object);
     }

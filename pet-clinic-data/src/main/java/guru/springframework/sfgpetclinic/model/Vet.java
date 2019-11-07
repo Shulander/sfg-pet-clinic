@@ -20,5 +20,5 @@ import java.util.Set;
 public class Vet extends Person {
 
     @Builder.Default
-    private Set<Specialty> specialty = new HashSet<>();
+    private Set<Specialty> specialties = new HashSet<>();
 }

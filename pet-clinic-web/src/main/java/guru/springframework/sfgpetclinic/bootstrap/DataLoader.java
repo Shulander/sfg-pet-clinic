@@ -3,9 +3,11 @@ package guru.springframework.sfgpetclinic.bootstrap;
 import guru.springframework.sfgpetclinic.model.Owner;
 import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.model.PetType;
+import guru.springframework.sfgpetclinic.model.Specialty;
 import guru.springframework.sfgpetclinic.model.Vet;
 import guru.springframework.sfgpetclinic.services.OwnerService;
 import guru.springframework.sfgpetclinic.services.PetTypeService;
+import guru.springframework.sfgpetclinic.services.SpecialtyService;
 import guru.springframework.sfgpetclinic.services.VetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +24,18 @@ public class DataLoader implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
     private final PetTypeService petTypeService;
+    private final SpecialtyService specialtyService;
 
     @Override
     public void run(String... args) throws Exception {
         log.info("Data Loader started");
+        if (petTypeService.findAll().isEmpty()) {
+            loadData();
+        }
+        log.info("Data loader finished!");
+    }
+
+    private void loadData() {
         PetType dogType = PetType.builder().name("Dog").build();
         PetType savedDogType = petTypeService.save(dogType);
 
@@ -74,10 +84,20 @@ public class DataLoader implements CommandLineRunner {
 
         log.info("Loaded Owners...");
 
+        Specialty radiologySpecialty = Specialty.builder().description("Radiology").build();
+        Specialty savedRadiologySpecialty = specialtyService.save(radiologySpecialty);
+        Specialty surgerySpecialty = Specialty.builder().description("Surgery").build();
+        Specialty savedSurgerySpecialty = specialtyService.save(surgerySpecialty);
+        Specialty dentistrySpecialty = Specialty.builder().description("Dentistry").build();
+        Specialty savedDentistrySpecialty = specialtyService.save(dentistrySpecialty);
+        log.info("Loaded Specialties...");
+
         Vet vet1 = Vet.builder()
                 .firstName("Sam")
                 .lastName("Axe")
                 .build();
+        vet1.getSpecialties().add(savedRadiologySpecialty);
+        vet1.getSpecialties().add(savedSurgerySpecialty);
         vetService.save(vet1);
         log.info("Saved vet 1: {}", vet1);
 
@@ -85,6 +105,8 @@ public class DataLoader implements CommandLineRunner {
                 .firstName("Jessie")
                 .lastName("Porter")
                 .build();
+        vet2.getSpecialties().add(savedSurgerySpecialty);
+        vet2.getSpecialties().add(savedDentistrySpecialty);
         vetService.save(vet2);
         log.info("Saved vet 2: {}", vet2);
 
