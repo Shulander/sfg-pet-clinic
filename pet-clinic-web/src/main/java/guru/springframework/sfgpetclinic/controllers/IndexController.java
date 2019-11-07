@@ -13,4 +13,9 @@ public class IndexController {
         log.info("index mapping");
         return "index";
     }
+
+    @RequestMapping({"/oups"})
+    public String notImplemented() {
+        return "notimplemented";
+    }
 }
