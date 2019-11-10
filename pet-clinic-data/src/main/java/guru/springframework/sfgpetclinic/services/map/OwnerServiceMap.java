@@ -5,12 +5,14 @@ import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.services.OwnerService;
 import guru.springframework.sfgpetclinic.services.PetService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Repository
+@Service
+@Profile("map")
 @RequiredArgsConstructor
 class OwnerServiceMap extends AbstractMapService<Owner, Long> implements OwnerService {
     private final PetService petService;

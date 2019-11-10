@@ -4,9 +4,11 @@ import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.services.PetService;
 import guru.springframework.sfgpetclinic.services.PetTypeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
-@Repository
+@Service
+@Profile("map")
 @RequiredArgsConstructor
 class PetServicesMap extends AbstractMapService<Pet, Long> implements PetService {
     private final PetTypeService petTypeService;

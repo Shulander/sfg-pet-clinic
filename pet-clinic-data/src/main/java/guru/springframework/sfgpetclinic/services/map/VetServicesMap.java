@@ -5,12 +5,14 @@ import guru.springframework.sfgpetclinic.model.Vet;
 import guru.springframework.sfgpetclinic.services.SpecialtyService;
 import guru.springframework.sfgpetclinic.services.VetService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Repository
+@Service
+@Profile("map")
 @AllArgsConstructor
 class VetServicesMap extends AbstractMapService<Vet, Long> implements VetService {
     private final SpecialtyService specialtyService;
