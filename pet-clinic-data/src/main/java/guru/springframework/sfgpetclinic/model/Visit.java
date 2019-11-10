@@ -1,11 +1,10 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +15,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @ToString(exclude = "pet")
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Visit extends BaseEntity {
 

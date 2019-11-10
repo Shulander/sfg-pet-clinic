@@ -1,6 +1,5 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.Set;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString(callSuper = true)
 @Entity
 @Table(name = "owners")

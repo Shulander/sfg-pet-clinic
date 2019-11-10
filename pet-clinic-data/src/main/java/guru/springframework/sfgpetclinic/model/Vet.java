@@ -1,6 +1,5 @@
 package guru.springframework.sfgpetclinic.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,6 @@ import java.util.Set;
 @ToString
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "vets")
 public class Vet extends Person {
