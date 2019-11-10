@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-@ToString
+@ToString(exclude = "pet")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

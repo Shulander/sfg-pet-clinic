@@ -5,16 +5,19 @@ import guru.springframework.sfgpetclinic.model.Pet;
 import guru.springframework.sfgpetclinic.model.PetType;
 import guru.springframework.sfgpetclinic.model.Specialty;
 import guru.springframework.sfgpetclinic.model.Vet;
+import guru.springframework.sfgpetclinic.model.Visit;
 import guru.springframework.sfgpetclinic.services.OwnerService;
 import guru.springframework.sfgpetclinic.services.PetTypeService;
 import guru.springframework.sfgpetclinic.services.SpecialtyService;
 import guru.springframework.sfgpetclinic.services.VetService;
+import guru.springframework.sfgpetclinic.services.VisitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 @Slf4j
 @Component
@@ -25,6 +28,7 @@ public class DataLoader implements CommandLineRunner {
     private final VetService vetService;
     private final PetTypeService petTypeService;
     private final SpecialtyService specialtyService;
+    private final VisitService visitService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -111,5 +115,14 @@ public class DataLoader implements CommandLineRunner {
         log.info("Saved vet 2: {}", vet2);
 
         log.info("Loaded Vets...");
+
+        Visit catVisit = Visit.builder()
+                .date(LocalDate.now().plusDays(30))
+                .description("Sneezy Kitty")
+                .pet(fionasPet)
+                .build();
+        visitService.save(catVisit);
+        fionasPet.setVisits(Collections.singleton(catVisit));
+        log.info("Loaded Visit...");
     }
 }
