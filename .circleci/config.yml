@@ -30,9 +30,19 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: mvn install -DskipTests
+      - run: mvn install
 
       - run: mvn dependency:go-offline
+
+      - store_test_results:
+          path: pet-clinic-data/target/surefire-reports/
+      - store_artifacts:
+          path: pet-clinic-data/target/pet-clinic-data-0.0.3-SNAPSHOT.jar
+
+      - store_test_results:
+          path: pet-clinic-web/target/surefire-reports/
+      - store_artifacts:
+          path: pet-clinic-web/target/pet-clinic-web-0.0.3-SNAPSHOT.jar
 
       - save_cache:
           paths:
