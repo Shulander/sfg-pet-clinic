@@ -21,7 +21,7 @@ public class OwnerController {
     }
 
     @RequestMapping({"", "/", "/index", "/index.html", "/find"})
-    public String listVets(Model model) {
+    public String listOwners(Model model) {
         Set<Owner> all = ownerService.findAll();
         log.info("Owners");
         all.forEach(owner -> log.info(owner.toString()));
