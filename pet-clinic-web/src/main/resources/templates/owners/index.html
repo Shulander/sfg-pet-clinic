@@ -12,12 +12,14 @@
         <th style="width: 150px;">Id</th>
         <th style="width: 250px;">First Name</th>
         <th style="width: 250px;">Last Name</th>
+        <th style="width: 100px;">Details</th>
     </tr>
     </thead>
     <tr th:each="owner : ${owners}">
         <td th:text="${owner.id}">Id</td>
         <td th:text="${owner.firstName}">First Name</td>
         <td th:text="${owner.lastName}">Last Name</td>
+        <td><a href="#" th:href="@{'/owners/' + ${owner.id}}">View</a></td>
     </tr>
 </table>
 </body>
