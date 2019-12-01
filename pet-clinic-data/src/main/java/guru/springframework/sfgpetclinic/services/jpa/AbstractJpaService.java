@@ -19,7 +19,8 @@ abstract class AbstractJpaService<T extends BaseEntity, ID> {
     }
 
     public Set<T> findAll() {
-        return StreamSupport.stream(getRepository().findAll().spliterator(), false)
+        Iterable<T> all = getRepository().findAll();
+        return StreamSupport.stream(all.spliterator(), false)
                 .collect(Collectors.toSet());
     }
 

@@ -12,12 +12,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -35,8 +35,8 @@ class OwnerServiceMapTest {
 
     @BeforeEach
     void setUp() {
-        Owner owner = buildOwner(OWNER_1_ID, "Fiona", OWNER_1_LAST_NAME);
-        ownerService.save(owner);
+        ownerService.save(buildOwner(OWNER_1_ID, "Fiona", OWNER_1_LAST_NAME));
+        ownerService.save(buildOwner(OWNER_2_ID, "Michael", "Weston"));
     }
 
     @Test
@@ -51,21 +51,23 @@ class OwnerServiceMapTest {
         Set<Owner> owners = ownerService.findAll();
 
         assertNotNull(owners);
-        assertEquals(1, owners.size());
+        assertEquals(2, owners.size());
     }
 
     @Test
     void deleteById() {
         ownerService.deleteById(OWNER_1_ID);
 
-        assertTrue(ownerService.findAll().isEmpty());
+        Set<Owner> owners = ownerService.findAll();
+        assertEquals(1, owners.size());
     }
 
     @Test
     void delete() {
         ownerService.delete(ownerService.findById(OWNER_1_ID));
 
-        assertTrue(ownerService.findAll().isEmpty());
+        Set<Owner> owners = ownerService.findAll();
+        assertEquals(1, owners.size());
     }
 
     @Test
@@ -115,6 +117,34 @@ class OwnerServiceMapTest {
 
         assertNotNull(owner);
         assertNotNull(owner.getId());
+    }
+
+    @Test
+    void findByLastNameLike() {
+        List<Owner> owners = ownerService.findAllByLastNameLike(OWNER_1_LAST_NAME.substring(1, 3));
+
+        assertEquals(1, owners.size());
+    }
+
+    @Test
+    void findByLastNameLikeEmptyString() {
+        List<Owner> owners = ownerService.findAllByLastNameLike("");
+
+        assertEquals(2, owners.size());
+    }
+
+    @Test
+    void findByLastNameLikeNoResults() {
+        List<Owner> owners = ownerService.findAllByLastNameLike("not found");
+
+        assertEquals(0, owners.size());
+    }
+
+    @Test
+    void findByLastNameLikeNullInput() {
+        List<Owner> owners = ownerService.findAllByLastNameLike(null);
+
+        assertEquals(0, owners.size());
     }
 
     private Owner buildOwner(Long id, String name, String lastName) {

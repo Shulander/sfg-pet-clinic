@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -118,6 +119,18 @@ class OwnerJpaServiceTest {
 
         assertEquals(owner, actual);
         verify(ownerRepository).findByLastName(lastName);
+    }
+
+    @Test
+    void findByLastNameLike() {
+        String lastName = "lastName";
+        List<Owner> expected = Collections.singletonList(mock(Owner.class));
+        when(ownerRepository.findAllByLastNameLike(lastName)).thenReturn(expected);
+
+        List<Owner> actual = ownerService.findAllByLastNameLike(lastName);
+
+        assertEquals(expected, actual);
+        verify(ownerRepository).findAllByLastNameLike(lastName);
     }
 
     @Test

@@ -14,13 +14,16 @@ import org.mockito.quality.Strictness;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -58,11 +61,11 @@ class OwnerControllerTest {
     void shouldReturnOwners() throws Exception {
         when(ownerService.findAll()).thenReturn(owners);
 
-        mockMvc.perform(get("/owners"))
+        mockMvc.perform(get("/owners/list"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("owners/index"))
-                .andExpect(model().attributeExists("owners"))
-                .andExpect(model().attribute("owners", hasSize(3)));
+                .andExpect(view().name("owners/ownersList"))
+                .andExpect(model().attributeExists("selections"))
+                .andExpect(model().attribute("selections", hasSize(3)));
 
         verify(ownerService).findAll();
     }
@@ -73,9 +76,9 @@ class OwnerControllerTest {
 
         mockMvc.perform(get("/owners/index"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("owners/index"))
-                .andExpect(model().attributeExists("owners"))
-                .andExpect(model().attribute("owners", hasSize(3)));
+                .andExpect(view().name("owners/ownersList"))
+                .andExpect(model().attributeExists("selections"))
+                .andExpect(model().attribute("selections", hasSize(3)));
 
         verify(ownerService).findAll();
     }
@@ -86,12 +89,10 @@ class OwnerControllerTest {
 
         mockMvc.perform(get("/owners/find"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("owners/index"))
-                .andExpect(model().attributeExists("owners"))
-                .andExpect(model().attribute("owners", hasSize(3)));
-
-        verify(ownerService).findAll();
+                .andExpect(view().name("owners/findOwners"))
+                .andExpect(model().attributeExists("owner"));
     }
+
 
     @Test
     void displayOwner() throws Exception {
@@ -105,6 +106,43 @@ class OwnerControllerTest {
         verify(ownerService).findById(anyLong());
     }
 
+    @Test
+    void shouldReturnFindOwners() throws Exception {
+        when(ownerService.findAll()).thenReturn(owners);
+
+        mockMvc.perform(get("/owners"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/findOwners"))
+                .andExpect(model().attributeExists("owner"));
+
+        verify(ownerService).findAllByLastNameLike(anyString());
+    }
+
+    @Test
+    void processFindFormReturnMany() throws Exception {
+        when(ownerService.findAllByLastNameLike(anyString()))
+                .thenReturn(Arrays.asList(Owner.builder().id(1L).build(),
+                                          Owner.builder().id(2L).build()));
+
+        mockMvc.perform(get("/owners"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/ownersList"))
+                .andExpect(model().attribute("selections", hasSize(2)));
+
+        verify(ownerService).findAllByLastNameLike(anyString());
+    }
+
+    @Test
+    void processFindFormReturnOne() throws Exception {
+        when(ownerService.findAllByLastNameLike(anyString()))
+                .thenReturn(singletonList(Owner.builder().id(1L).build()));
+
+        mockMvc.perform(get("/owners"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/1"));
+
+        verify(ownerService).findAllByLastNameLike(anyString());
+    }
 
     @AfterEach
     void tearDown() {

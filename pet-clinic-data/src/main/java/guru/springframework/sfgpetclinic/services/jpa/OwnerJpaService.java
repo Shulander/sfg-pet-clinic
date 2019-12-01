@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Profile("jpa")
 @AllArgsConstructor
@@ -17,6 +19,11 @@ class OwnerJpaService extends AbstractJpaService<Owner, Long> implements OwnerSe
     @Override
     public Owner findByLastName(String lastName) {
         return ownerRepository.findByLastName(lastName).orElse(null);
+    }
+
+    @Override
+    public List<Owner> findAllByLastNameLike(String lastName) {
+        return ownerRepository.findAllByLastNameLike(lastName);
     }
 
     @Override
