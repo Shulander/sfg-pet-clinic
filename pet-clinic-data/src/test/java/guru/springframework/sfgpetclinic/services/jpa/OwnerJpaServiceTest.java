@@ -5,6 +5,7 @@ import guru.springframework.sfgpetclinic.repositories.OwnerRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -124,13 +126,15 @@ class OwnerJpaServiceTest {
     @Test
     void findByLastNameLike() {
         String lastName = "lastName";
+        ArgumentCaptor<String> lastNameArgumentCaptor = ArgumentCaptor.forClass(String.class);
         List<Owner> expected = Collections.singletonList(mock(Owner.class));
-        when(ownerRepository.findAllByLastNameLike(lastName)).thenReturn(expected);
+        when(ownerRepository.findAllByLastNameLike(anyString())).thenReturn(expected);
 
         List<Owner> actual = ownerService.findAllByLastNameLike(lastName);
 
         assertEquals(expected, actual);
-        verify(ownerRepository).findAllByLastNameLike(lastName);
+        verify(ownerRepository).findAllByLastNameLike(lastNameArgumentCaptor.capture());
+        assertEquals("%" + lastName + "%", lastNameArgumentCaptor.getValue());
     }
 
     @Test

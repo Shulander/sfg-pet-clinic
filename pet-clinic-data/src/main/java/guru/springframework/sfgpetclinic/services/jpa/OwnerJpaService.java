@@ -23,7 +23,8 @@ class OwnerJpaService extends AbstractJpaService<Owner, Long> implements OwnerSe
 
     @Override
     public List<Owner> findAllByLastNameLike(String lastName) {
-        return ownerRepository.findAllByLastNameLike(lastName);
+        String lastNameWithWildcards = "%" + lastName + "%";
+        return ownerRepository.findAllByLastNameLike(lastNameWithWildcards);
     }
 
     @Override
