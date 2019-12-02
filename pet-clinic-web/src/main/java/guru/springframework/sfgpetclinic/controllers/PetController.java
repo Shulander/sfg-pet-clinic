@@ -9,6 +9,7 @@ import guru.springframework.sfgpetclinic.services.PetTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,38 +57,41 @@ public class PetController {
     }
 
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdatePetForm(@Valid Pet pet, @PathVariable("petId") Long petId,
-                                       @PathVariable("ownerId") Long ownerId, Model model,
+    public String processUpdatePetForm(@Valid Pet pet, @PathVariable("petId") Long petId, Owner owner, Model model,
                                        BindingResult result) {
         if (result.hasErrors()) {
+            pet.setOwner(owner);
+            model.addAttribute("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         }
 
-        // TODO: 12/1/19 Check this latter
+        owner.getPets().add(pet);
         pet.setId(petId);
-        Pet savedPet = petService.save(pet);
+        petService.save(pet);
 
-        return "redirect:/owners/" + ownerId;
+        return "redirect:/owners/" + owner.getId();
     }
 
     @GetMapping("/pets/new")
-    public String newPetForm(Model model) {
-        model.addAttribute("pet", Pet.builder().build());
+    public String newPetForm(Owner owner, Model model) {
+        model.addAttribute("pet", Pet.builder().owner(owner).build());
 
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/pets/new")
-    public String processNewPetForm(@Valid Pet pet, @PathVariable("ownerId") Long ownerId, Model model,
-                                    BindingResult result) {
+    public String processNewPetForm(@Valid Pet pet, Owner owner, Model model, BindingResult result) {
+        if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+            result.rejectValue("name", "duplicate", "already exists");
+        }
         if (result.hasErrors()) {
+            model.addAttribute("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         }
 
-        // TODO: 12/1/19 Check this latter
-        Pet savedPet = petService.save(pet);
+        petService.save(pet);
 
-        return "redirect:/owners/" + ownerId;
+        return "redirect:/owners/" + owner.getId();
     }
 
 }
