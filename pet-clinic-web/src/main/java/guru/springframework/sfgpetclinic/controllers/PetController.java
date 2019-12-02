@@ -42,7 +42,7 @@ public class PetController {
         return ownerService.findById(ownerId);
     }
 
-    @InitBinder("pet")
+    @InitBinder
     public void initOwnerBinder(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
     }
@@ -65,7 +65,7 @@ public class PetController {
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         }
 
-        owner.getPets().add(pet);
+        pet.setOwner(owner);
         pet.setId(petId);
         petService.save(pet);
 
@@ -80,15 +80,17 @@ public class PetController {
     }
 
     @PostMapping("/pets/new")
-    public String processNewPetForm(@Valid Pet pet, Owner owner, Model model, BindingResult result) {
+    public String processNewPetForm(Owner owner, @Valid Pet pet, BindingResult result, Model model) {
         if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
             result.rejectValue("name", "duplicate", "already exists");
         }
         if (result.hasErrors()) {
+            pet.setOwner(owner);
             model.addAttribute("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         }
 
+        pet.setOwner(owner);
         petService.save(pet);
 
         return "redirect:/owners/" + owner.getId();
