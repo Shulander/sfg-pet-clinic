@@ -36,4 +36,20 @@ public class Owner extends Person {
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Pet> pets = new HashSet<>();
+
+
+    public Pet getPet(String name) {
+        return getPet(name, false);
+    }
+
+
+    public Pet getPet(final String name, boolean ignoreNew) {
+        String lowerCaseName = name.toLowerCase();
+
+        return pets.stream()
+                .filter(pet -> !ignoreNew || !pet.isNew())
+                .filter(pet -> pet.getName().toLowerCase().equals(lowerCaseName))
+                .findFirst()
+                .orElse(null);
+    }
 }
