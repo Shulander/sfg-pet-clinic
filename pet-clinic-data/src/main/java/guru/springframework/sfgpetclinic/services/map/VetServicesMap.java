@@ -22,12 +22,12 @@ class VetServicesMap extends AbstractMapService<Vet, Long> implements VetService
         if (object == null) {
             throw new IllegalArgumentException("Object to be persisted must not be null");
         }
-        if (object.getSpecialties() != null) {
-            Set<Specialty> newPets = object.getSpecialties()
+        if (object.getSpecialities() != null) {
+            Set<Specialty> newPets = object.getSpecialities()
                     .stream()
                     .map(this::persistNewObject)
                     .collect(Collectors.toSet());
-            object.setSpecialties(newPets);
+            object.setSpecialities(newPets);
         }
         return super.save(object);
     }

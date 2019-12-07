@@ -100,8 +100,8 @@ public class DataLoader implements CommandLineRunner {
                 .firstName("Sam")
                 .lastName("Axe")
                 .build();
-        vet1.getSpecialties().add(savedRadiologySpecialty);
-        vet1.getSpecialties().add(savedSurgerySpecialty);
+        vet1.getSpecialities().add(savedRadiologySpecialty);
+        vet1.getSpecialities().add(savedSurgerySpecialty);
         vetService.save(vet1);
         log.info("Saved vet 1: {}", vet1);
 
@@ -109,8 +109,8 @@ public class DataLoader implements CommandLineRunner {
                 .firstName("Jessie")
                 .lastName("Porter")
                 .build();
-        vet2.getSpecialties().add(savedSurgerySpecialty);
-        vet2.getSpecialties().add(savedDentistrySpecialty);
+        vet2.getSpecialities().add(savedSurgerySpecialty);
+        vet2.getSpecialities().add(savedDentistrySpecialty);
         vetService.save(vet2);
         log.info("Saved vet 2: {}", vet2);
 
