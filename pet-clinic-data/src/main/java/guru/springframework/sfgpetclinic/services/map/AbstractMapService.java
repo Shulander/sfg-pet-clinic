@@ -28,7 +28,7 @@ abstract class AbstractMapService<T extends BaseEntity, ID extends Long> {
     }
 
     public Set<T> findAll() {
-        return new HashSet<T>(map.values());
+        return new HashSet<>(map.values());
     }
 
     public void deleteById(ID id) {
