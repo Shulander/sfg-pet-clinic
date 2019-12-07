@@ -142,6 +142,21 @@ class OwnerControllerTest {
         verify(ownerService).findAllByLastNameLike(anyString());
     }
 
+
+    @Test
+    void processFindFormEmptyReturnMany() throws Exception {
+        when(ownerService.findAllByLastNameLike(""))
+                .thenReturn(Arrays.asList(Owner.builder().id(1L).build(),
+                                          Owner.builder().id(2L).build()));
+
+        mockMvc.perform(get("/owners")
+                                .param("lastName", ""))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/ownersList"))
+                .andExpect(model().attribute("selections", hasSize(2)));
+    }
+
+
     @Test
     void initCreationForm() throws Exception {
         mockMvc.perform(get("/owners/new"))
@@ -149,6 +164,7 @@ class OwnerControllerTest {
                 .andExpect(view().name("owners/createOrUpdateOwnerForm"))
                 .andExpect(model().attributeExists("owner"));
     }
+
 
     @Test
     void processCreationForm() throws Exception {
